@@ -6,12 +6,34 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
-// 1. CONEXIÓN A MONGODB
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log('MongoDB conectado  ✓💜  '))
-.catch(err => console.log('Error en MongoDB:', err.message));
+// 1. CONEXIÓN A MONGODB (patrón cacheado, necesario para entornos serverless como Vercel)
+let conexion = null;
+async function conectarDB() {
+  if (conexion) return conexion;
+  conexion = mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 10000,
+  }).then((m) => {
+    console.log('MongoDB conectado  ✓💜  ');
+    return m;
+  }).catch((err) => {
+    console.log('Error en MongoDB:', err.message);
+    conexion = null; // permite reintentar en la próxima petición
+    throw err;
+  });
+  return conexion;
+}
 
 const app = express();
+
+// Asegura que la conexión esté lista antes de procesar cualquier ruta
+app.use(async (req, res, next) => {
+  try {
+    await conectarDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ error: 'No se pudo conectar a la base de datos' });
+  }
+});
 
 // CORS: una sola configuración, dominio correcto (pkplanretorno, sin typo)
 app.use(cors({
