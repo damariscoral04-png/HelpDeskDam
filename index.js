@@ -12,11 +12,24 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.log('Error en MongoDB:', err.message));
 
 const app = express();
+
+
 app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  origin: ["https://damaris.kplanretorno.online", "*"],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 200
 }));
+
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+
 app.use(express.json());
 
 // 2. CONFIGURACIÓN BREVO API DIRECTA
