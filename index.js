@@ -3,24 +3,23 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
+
 dotenv.config();
 
 // 1. CONEXIÓN A MONGODB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB conectado  ✓💜  '))
-  .catch(err => console.log('Error en MongoDB:', err.message));
+.then(() => console.log('MongoDB conectado  ✓💜  '))
+.catch(err => console.log('Error en MongoDB:', err.message));
 
 const app = express();
 
-// CONFIGURACIÓN DE CORS TOTALMENTE ESTABLE
+// CORS: una sola configuración, dominio correcto (pkplanretorno, sin typo)
 app.use(cors({
-  origin: 'https://damaris.pkplanretorno.online', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: ["https://damaris.pkplanretorno.online"],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 200
 }));
-
-// ELIMINADA LA LÍNEA APP.OPTIONS QUE REVENTABA EXPRESS EN VERCEL
 
 app.use(express.json());
 
