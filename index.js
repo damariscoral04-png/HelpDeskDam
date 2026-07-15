@@ -3,32 +3,25 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-
 dotenv.config();
 
 // 1. CONEXIÓN A MONGODB
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log('MongoDB conectado  ✓💜  '))
-.catch(err => console.log('Error en MongoDB:', err.message));
+  .then(() => console.log('MongoDB conectado  ✓💜  '))
+  .catch(err => console.log('Error en MongoDB:', err.message));
 
 const app = express();
 
-
+// CONFIGURACIÓN DE CORS REPARADA
 app.use(cors({
-  origin: ["https://damaris.kplanretorno.online", "*"],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-  optionsSuccessStatus: 200
+  origin: 'https://damaris.pkplanretorno.online', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
-});
+// Responder inmediatamente a las peticiones "preflight" (OPTIONS)
+app.options('*', cors());
 
 app.use(express.json());
 
