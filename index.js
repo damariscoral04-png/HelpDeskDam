@@ -20,8 +20,8 @@ app.use(cors({
   credentials: true
 }));
 
-// Responder inmediatamente a las peticiones "preflight" (OPTIONS)
-app.options('*', cors());
+// CORRECCIÓN DEL CRASH: Se usa '/*' en vez de '*' para que Express no colapse
+app.options('/*', cors());
 
 app.use(express.json());
 
