@@ -11,7 +11,11 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.log('Error en MongoDB:', err.message));
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use(express.json());
 
 // 2. CONFIGURACIÓN BREVO API DIRECTA
@@ -79,7 +83,7 @@ async function clasificarConIA(datos) {
   }
 }
 
-// 5. ENVIAR CORREO AL ADMIN (solo urgentes) → DISEÑO MORADO
+// 5. ENVIAR CORREO AL ADMIN (solo urgentes) 
 async function avisarAdmin(ticket) {
   try {
     const fecha = new Date().toLocaleString('es-EC', {
