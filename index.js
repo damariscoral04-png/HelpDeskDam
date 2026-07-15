@@ -235,3 +235,5 @@ app.get('/api/tickets', async (req, res) => {
 // 10. INICIAR SERVIDOR
 const PUERTO = process.env.PORT || 3000;
 app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto ${PUERTO}`));
+
+export default app;
