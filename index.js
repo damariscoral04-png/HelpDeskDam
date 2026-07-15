@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 const app = express();
 
-// CONFIGURACIÓN DE CORS REPARADA
+// CONFIGURACIÓN DE CORS TOTALMENTE ESTABLE
 app.use(cors({
   origin: 'https://damaris.pkplanretorno.online', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -20,8 +20,7 @@ app.use(cors({
   credentials: true
 }));
 
-// CORRECCIÓN DEL CRASH: Se usa '/*' en vez de '*' para que Express no colapse
-app.options('/*', cors());
+// ELIMINADA LA LÍNEA APP.OPTIONS QUE REVENTABA EXPRESS EN VERCEL
 
 app.use(express.json());
 
