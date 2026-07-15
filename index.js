@@ -14,13 +14,8 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 
 
-app.use(cors({
-  origin: ["https://damaris.kplanretorno.online", "*"],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-  optionsSuccessStatus: 200
-}));
-
+app.use(cors({ origin: "*" }));
+app.options("*", cors());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -137,7 +132,7 @@ async function avisarAdmin(ticket) {
   }
 }
 
-// 6. ENVIAR RESPUESTA AL CLIENTE
+// 6. ENVIAR RESPUESTA AL CLIENTE 
 async function responderCliente(ticket) {
   try {
     const cuerpoCorreo = {
