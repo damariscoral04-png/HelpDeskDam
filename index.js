@@ -14,20 +14,20 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 
 
-// Configuración correcta de CORS para evitar bloqueos
 app.use(cors({
-  origin: '*', 
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: ["https://damaris.kplanretorno.online", "*"],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 200
 }));
 
-// Responder OK (200) de forma obligatoria a la petición de control (OPTIONS)
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
 });
 
 app.use(express.json());
@@ -137,7 +137,7 @@ async function avisarAdmin(ticket) {
   }
 }
 
-// 6. ENVIAR RESPUESTA AL CLIENTE 
+// 6. ENVIAR RESPUESTA AL CLIENTE
 async function responderCliente(ticket) {
   try {
     const cuerpoCorreo = {
@@ -235,5 +235,3 @@ app.get('/api/tickets', async (req, res) => {
 // 10. INICIAR SERVIDOR
 const PUERTO = process.env.PORT || 3000;
 app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto ${PUERTO}`));
-
-export default app;
