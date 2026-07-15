@@ -1,7 +1,7 @@
 {
   "name": "helpdeskdam",
   "version": "1.0.0",
-  "description": "CenesturAgent - Agente de soporte con IA",
+  "description": "DamARMAgent - Agente de soporte IA DamARM",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -13,14 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "axios": "^1.18.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongodb": "^7.5.0",
     "mongoose": "^9.7.4",
-    "nodemailer": "^9.0.3",
-    "sqlite3": "^6.0.1"
+    "node-fetch": "^3.3.2"
   }
 }

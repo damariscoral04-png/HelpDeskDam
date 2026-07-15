@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import fetch from 'node-fetch'; 
 
 dotenv.config();
 
@@ -123,7 +124,7 @@ async function avisarAdmin(ticket) {
   }
 }
 
-// 6. ENVIAR RESPUESTA AL CLIENTE → DISEÑO MORADO
+// 6. ENVIAR RESPUESTA AL CLIENTE
 async function responderCliente(ticket) {
   try {
     const cuerpoCorreo = {
@@ -204,7 +205,11 @@ app.post('/api/tickets', async (req, res) => {
   res.status(200).json({ exito: true, mensaje: 'Ticket registrado correctamente' });
 });
 
-// 9. RUTA PARA VER TODOS LOS TICKETS
+// 9. RUTA DE PRUEBA Y LISTA
+app.get('/', (req, res) => {
+  res.send('DamARMAgent funcionando correctamente ✓💜');
+});
+
 app.get('/api/tickets', async (req, res) => {
   try {
     const lista = await Ticket.find().sort({ fecha: -1 });
@@ -214,11 +219,6 @@ app.get('/api/tickets', async (req, res) => {
   }
 });
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send(' DamARMAgent funcionando correctamente ✓💜');
-});
-
 // 10. INICIAR SERVIDOR
 const PUERTO = process.env.PORT || 3000;
-app.listen(PUERTO, () => console.log(`Servidor corriendo en http://localhost:${PUERTO}`));
+app.listen(PUERTO, () => console.log(`Servidor corriendo en el puerto ${PUERTO}`));
